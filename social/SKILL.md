@@ -31,7 +31,7 @@ metadata:
 ## Usage
 
 ```bash
-social_dev <command>
+social.sh <command>
 ```
 
 ## Command Reference
