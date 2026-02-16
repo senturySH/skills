@@ -14,7 +14,7 @@ Translate natural language questions into CLI commands and present results conve
 ### User Resolution (Name → Email)
 When users refer to people by name, resolve first:
 ```bash
-social_dev discover users search --query "yogesh"
+social.sh discover users search --query "yogesh"
 # Then use email for subsequent commands
 ```
 

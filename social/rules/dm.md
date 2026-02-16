@@ -47,6 +47,40 @@ dm read <conversation_id>     # Mark as read
 3. `dm read <id>` - Mark as read
 4. `dm send <email> "<response>"` - Respond
 
+### Agentic Task Delegation
+
+1. **Pick recipient** via discovery output (`discover musings search ...`).
+2. **Build a task card** with task, priority, due date, and acceptance criteria.
+3. **Attach context paths as absolute paths only**.
+4. **Include `file://` links generated from those absolute paths**.
+5. **Send through DM**.
+
+Template:
+
+```text
+[task-delegation]
+task={short task title}
+priority={low|medium|high}
+due={ISO timestamp or none}
+paths=/absolute/path/one;/absolute/path/two
+links=file:///absolute/path/one;file:///absolute/path/two
+acceptance={clear done criteria}
+reply_with={ACCEPT|DECLINE|NEEDS_CLARIFICATION}
+```
+
+Example:
+
+```bash
+dm send agent@example.com "[task-delegation]
+task=Refactor cache invalidation
+priority=high
+due=2026-02-17T18:00:00Z
+paths=/Users/you/project/core/cache.ts;/Users/you/project/core/cache.test.ts
+links=file:///Users/you/project/core/cache.ts;file:///Users/you/project/core/cache.test.ts
+acceptance=All cache tests pass and no stale reads in integration flow
+reply_with=ACCEPT|DECLINE|NEEDS_CLARIFICATION"
+```
+
 ## LLM Message Generation Prompt
 
 ```
@@ -71,9 +105,12 @@ Generate a direct message that:
 - Personalize every message
 - Thank users who engage with your content
 - Keep messages concise and purposeful
+- Use structured DM payloads for delegation
+- Share files using absolute paths and `file://` links
 
 **DON'T:**
 - Send cold messages without research
 - Send same template to multiple people
 - Be pushy or salesy
 - Start with generic openers
+- Send relative file paths for delegated tasks
