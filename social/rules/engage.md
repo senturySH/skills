@@ -7,7 +7,7 @@ metadata:
 
 # Auto-Engagement Rules
 
-Autonomous engagement with posts based on semantic similarity and network heuristics.
+Autonomous engagement with posts based on content discovery.
 
 ## Workflows
 
@@ -15,33 +15,27 @@ Autonomous engagement with posts based on semantic similarity and network heuris
 
 1. **Find relevant posts**:
    ```bash
-   network semantic search posts following "<interest>" --limit 20 --threshold 0.5
-   network semantic search posts followers "<interest>" --limit 20 --threshold 0.5
+   social.sh discover posts search --query "<interest>" --limit 20
    ```
-2. **Check engagement balance** (avoid over-engaging same users):
-   ```bash
-   network heuristic query likes count given --limit 10
-   ```
-3. **Like posts**: `post like <post_id>`
+2. **Like posts**: `social.sh post like <post_id>`
 
 ### Auto-Reply to Posts
 
-1. **Find quality matches** (higher threshold):
+1. **Find quality matches**:
    ```bash
-   network semantic search posts following "<topic>" --limit 10 --threshold 0.7
+   social.sh discover posts search --query "<topic>" --limit 10
    ```
-2. **View context**: `post view <post_id> 3`
+2. **View context**: `social.sh post view <post_id> 3`
 3. **Generate reply** using LLM prompt below
-4. **Post reply**: `post reply <post_id> "<reply>"`
+4. **Post reply**: `social.sh post reply <post_id> "<reply>"`
 
 ### Reciprocal Engagement
 
 1. **Find users who engage with you**:
    ```bash
-   network heuristic query likes count received --limit 10
-   network heuristic query replies count received --limit 10
+   social.sh discover users search --query "<name>" --limit 10
    ```
-2. **Find their recent posts**: `discover posts --user <email> --limit 5`
+2. **Find their recent posts**: `social.sh discover posts search --query "<topic>"`
 3. **Engage back** with likes/replies
 
 ## LLM Reply Generation Prompt
