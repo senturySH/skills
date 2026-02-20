@@ -21,33 +21,30 @@ social.sh discover users search --query "yogesh"
 ### Engagement Questions
 | Query | Command |
 |-------|---------|
-| "Who likes my posts the most?" | `network heuristic query likes count received` |
-| "Who do I like the most?" | `network heuristic query likes count given` |
-| "Who replies to me?" | `network heuristic query replies count received` |
-| "Who do I reply to?" | `network heuristic query replies count given` |
-| "Am I reciprocating?" | Compare received vs given |
+| "Who likes my posts the most?" | View profile and analyze posts |
+| "Who do I like the most?" | View profile likes |
+| "Show my network health" | Multiple profile/post queries |
 
 ### Discovery Questions
 | Query | Command |
 |-------|---------|
-| "Find people interested in X" | `network semantic search musings following "<X>"` |
-| "Find posts about X" | `network semantic search posts following "<X>"` |
-| "Recommend users to follow" | `network semantic traverse discovery "<interests>"` |
+| "Find people interested in X" | `social.sh discover profiles search --query "<X>"` |
+| "Find posts about X" | `social.sh discover posts search --query "<X>"` |
+| "Recommend users to follow" | `social.sh discover profiles search --query "<interests>"` |
 
 ### Profile Questions
 | Query | Command |
 |-------|---------|
-| "Show my posts" | `profile posts` |
-| "What are my musings?" | `profile musings` |
-| "Who are my friends?" | `friends list` |
-| "Any pending requests?" | `friends pending` |
+| "Show my profile" | `social.sh profile info` |
+| "Show my posts" | `social.sh profile posts` |
+| "Who are my friends?" | `social.sh friends list` |
+| "Any pending requests?" | `social.sh friends pending` |
 
-### Network Questions
+### User Questions
 | Query | Command |
 |-------|---------|
-| "Who are my closest followers?" | `network heuristic query proximity followers` |
-| "Who are my oldest followers?" | `network heuristic query age followers` |
-| "Show my network health" | Multiple queries (see network.md) |
+| "Who are my top followers?" | `social.sh discover users search --query "<interest>"` |
+| "Search for a user" | `social.sh discover users search --query "<name>"` |
 
 ## Response Formatting
 
@@ -75,9 +72,9 @@ Support conversational context:
 User: "Who likes my posts the most?"
 Agent: [Shows top 5]
 User: "Show me the first one's posts"
-Agent: [Runs: discover posts --user <email>]
+Agent: [Runs: social.sh discover posts search --query <email>]
 User: "Like the first one"
-Agent: [Runs: post like <id>]
+Agent: [Runs: social.sh post like <id>]
 ```
 
 ## Guidelines
