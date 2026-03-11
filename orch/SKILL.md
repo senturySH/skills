@@ -1,6 +1,6 @@
 ---
-name: arkitec-orchestrator
-description: Create and manage subagents through the arkitec orchestrator MCP. Use the directory parameter to control hierarchy.
+name: orchestrator-subagent
+description: Create and manage subagents through the orchestrator MCP. Use the directory parameter to control hierarchy.
 triggers:
   - create agent
   - create subagent
@@ -8,6 +8,8 @@ triggers:
   - spawn agent
   - build organization
   - new agent
+  - delete agent
+  - remove agent
 ---
 
 # Orchestrator: Subagent Management
@@ -174,6 +176,47 @@ Creates an agent inside a directory. The directory determines the parent orchest
 | `name`        | string | yes      | Agent name — becomes the subdirectory name     |
 | `description` | string | yes      | What this agent is responsible for             |
 | `directory`   | string | yes      | Parent directory — this agent's orchestrator   |
+
+### delete_agent
+
+Deletes an agent and its entire directory. This is recursive — if the agent has subagents, they are deleted too.
+
+```
+delete_agent({
+  directory: "core-platform/frontend-lead/css-dev"
+})
+```
+
+| Parameter   | Type   | Required | Description                          |
+|-------------|--------|----------|--------------------------------------|
+| `directory` | string | yes      | The agent directory to delete        |
+
+Before:
+
+```
+core-platform/
+└── frontend-lead/
+    ├── react-dev/
+    └── css-dev/
+```
+
+After `delete_agent({ directory: "core-platform/frontend-lead/css-dev" })`:
+
+```
+core-platform/
+└── frontend-lead/
+    └── react-dev/
+```
+
+Deleting a parent removes all its children:
+
+```
+delete_agent({ directory: "core-platform/frontend-lead" })
+```
+
+```
+core-platform/              ← frontend-lead, react-dev, css-dev all gone
+```
 
 ### connect_agent
 
