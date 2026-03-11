@@ -1,6 +1,6 @@
 ---
-name: orchestrator-subagent
-description: Create and manage subagents through the orchestrator MCP. Use the directory parameter to control hierarchy.
+name: arkitec
+description: Create and manage subagents through the arkitec orchestrator MCP. Use the directory parameter to control hierarchy.
 triggers:
   - create agent
   - create subagent
