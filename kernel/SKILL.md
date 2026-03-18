@@ -33,7 +33,7 @@ Read the previous memory for the last 50–200 lines.
 
 ```
 [SYSTEM] Reading Memory...
-arkitec-memory_memory_recent(lines=100)
+memory_recent(lines=100)
 ```
 
 ### Step 1 — Check Task Manager
@@ -41,9 +41,9 @@ Read the Task Manager to discover all active tasks from previous cycles.
 
 ```
 [SYSTEM] Checking Task Manager...
-arkitec-memory_task_list(status=running)
-arkitec-memory_task_list(status=blocked)
-arkitec-memory_task_list(status=pending)
+task_list(status=running)
+task_list(status=blocked)
+task_list(status=pending)
 ```
 
 ### Step 2 — Load Memory for Each Active Task
@@ -51,7 +51,7 @@ For each active task, load prior memory using the `[program][task]` tag.
 
 ```
 [SYSTEM] Loading memory for [program][task]...
-arkitec-memory_memory_read_program_task(program, task, limit=50, order=desc)
+memory_read_program_task(program, task, limit=50, order=desc)
 ```
 
 ### Step 3 — Execute Programs
@@ -130,29 +130,29 @@ The description field is indexed for search — use concrete, searchable terms.
 ### Inbox / DM
 | Tool | Purpose |
 |------|---------|
-| `arkitec-memory_inbox_unread_count` | Get count of unread messages |
-| `arkitec-memory_inbox_list(limit, offset)` | List inbox conversations |
-| `arkitec-memory_dm_get_conversation(conversationId)` | Read a specific conversation |
-| `arkitec-memory_dm_send(conversationId, message)` | Send a DM reply |
-| `arkitec-memory_inbox_mark_read(conversationId)` | Mark conversation as read |
+| `inbox_unread_count` | Get count of unread messages |
+| `inbox_list(limit, offset)` | List inbox conversations |
+| `dm_get_conversation(conversationId)` | Read a specific conversation |
+| `dm_send(conversationId, message)` | Send a DM reply |
+| `inbox_mark_read(conversationId)` | Mark conversation as read |
 
 ### Memory
 | Tool | Purpose |
 |------|---------|
-| `arkitec-memory_memory_recent(lines)` | Read recent log entries |
-| `arkitec-memory_memory_read_program_task(program, task, limit?, order?)` | Read memory for a specific task |
-| `arkitec-memory_memory_read_program(program, limit?, order?)` | Read all memory for a program |
-| `arkitec-memory_memory_grep(pattern, limit?, order?)` | Search memory by pattern |
+| `memory_recent(lines)` | Read recent log entries |
+| `memory_read_program_task(program, task, limit?, order?)` | Read memory for a specific task |
+| `memory_read_program(program, limit?, order?)` | Read all memory for a program |
+| `memory_grep(pattern, limit?, order?)` | Search memory by pattern |
 
 ### Tasks
 | Tool | Purpose |
 |------|---------|
-| `arkitec-memory_task_create(program, taskId, description, parentTaskId?, status?, priority?, references?)` | Create a task |
-| `arkitec-memory_task_list(program?, parentTaskId?, status?, priority?)` | List tasks |
-| `arkitec-memory_task_get(program, taskId)` | Get a single task |
-| `arkitec-memory_task_update(program, taskId, ...)` | Update task fields |
-| `arkitec-memory_task_mark_done(program, taskId)` | Mark task done (sets resolvedAt) |
-| `arkitec-memory_task_delete(program, taskId)` | Delete a task |
+| `task_create(program, taskId, description, parentTaskId?, status?, priority?, references?)` | Create a task |
+| `task_list(program?, parentTaskId?, status?, priority?)` | List tasks |
+| `task_get(program, taskId)` | Get a single task |
+| `task_update(program, taskId, ...)` | Update task fields |
+| `task_mark_done(program, taskId)` | Mark task done (sets resolvedAt) |
+| `task_delete(program, taskId)` | Delete a task |
 
 ---
 
@@ -191,19 +191,19 @@ END PROGRAM
 | Primitive | Tool Mapping |
 |-----------|--------------|
 | `read_memory(...)` | See dispatch table below |
-| `log(message)` | `arkitec-memory_memory_write_program_task(program, taskId, message)` |
-| `create_task(...)` | `arkitec-memory_task_create(program, taskId, description, parentTaskId?, status?, priority?, references?)` |
-| `task(taskId)` | `arkitec-memory_task_get(program, taskId)` |
-| `update_task(taskId, ...)` | `arkitec-memory_task_update(program, taskId, ...)` |
-| `list_tasks(...)` | `arkitec-memory_task_list(program?, parentTaskId?, status?, priority?)` |
-| `done(taskId)` | `arkitec-memory_task_mark_done(program, taskId)` |
-| `delete_task(taskId)` | `arkitec-memory_task_delete(program, taskId)` |
+| `log(message)` | `memory_write_program_task(program, taskId, message)` |
+| `create_task(...)` | `task_create(program, taskId, description, parentTaskId?, status?, priority?, references?)` |
+| `task(taskId)` | `task_get(program, taskId)` |
+| `update_task(taskId, ...)` | `task_update(program, taskId, ...)` |
+| `list_tasks(...)` | `task_list(program?, parentTaskId?, status?, priority?)` |
+| `done(taskId)` | `task_mark_done(program, taskId)` |
+| `delete_task(taskId)` | `task_delete(program, taskId)` |
 
 **`read_memory()` Dispatch** (default: `limit=10`, `order=asc`):
-- `pattern` → `arkitec-memory_memory_grep(pattern, limit?, order?)`
-- `taskId` → `arkitec-memory_memory_read_program_task(program, taskId, limit?, order?)`
-- `program` only → `arkitec-memory_memory_read_program(program, limit?, order?)`
-- none → `arkitec-memory_memory_read_program_task(program=self.program, taskId=self.taskId, limit=10, order=asc)`
+- `pattern` → `memory_grep(pattern, limit?, order?)`
+- `taskId` → `memory_read_program_task(program, taskId, limit?, order?)`
+- `program` only → `memory_read_program(program, limit?, order?)`
+- none → `memory_read_program_task(program=self.program, taskId=self.taskId, limit=10, order=asc)`
 
 ### Example Programs
 
