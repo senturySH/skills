@@ -280,7 +280,8 @@ END PROGRAM
 ## Programs
 
 
-Now start running ./references/network.md
+./references/network.md
+./references/delegation.md
 
 ---
 

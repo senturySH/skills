@@ -192,3 +192,83 @@ send_message({
 ```
 delete_agent({ directory: "content-lead/copywriter" })
 ```
+
+### MCP Config
+
+For adding MCP servers, update the relevant opencode.json, preserve the existing config, and add the required entries under the mcp object.
+Top-level MCP config is inherited by child agents. If a parent agent already defines shared MCP servers in its opencode.json, child agents can rely on that inherited configuration unless they need something more specific. Only add or override MCP entries in a child agent's opencode.json when that child needs different servers, different headers, or a narrower setup than its parent.
+
+When editing opencode.json:
+- preserve existing config
+- merge into mcp instead of replacing it
+- add only the servers actually needed
+- set enabled: true when the server should be available immediately
+- use oauth: false for local or private remote servers that do not use OAuth
+
+#### Example A: Add a remote MCP server
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "orchestrator": {
+      "type": "remote",
+      "url": "http://localhost:8250/mcp",
+      "enabled": true,
+      "oauth": false
+    }
+  }
+}
+
+#### Example B: Add a server without overwriting existing ones
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "arkitec": {
+      "type": "remote",
+      "url": "http://localhost:1153/mcp",
+      "enabled": true,
+      "headers": {
+        "directory": "core-platform/frontend-lead/react-dev"
+      }
+    },
+    "orchestrator": {
+      "type": "remote",
+      "url": "http://localhost:8250/mcp",
+      "enabled": true,
+      "oauth": false
+    }
+  }
+}
+
+#### Example C: Add a local MCP server
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "mcp_everything": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-everything"],
+      "enabled": true
+    }
+  }
+}
+
+#### Example D: Add an authenticated remote MCP server
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true,
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      }
+    }
+  }
+}
+#### Example E: Rely on inherited MCP config
+If core-platform/opencode.json already defines shared MCP servers, then:
+- core-platform/frontend-lead
+- core-platform/frontend-lead/react-dev
+inherit that config by default.
+Only create or edit core-platform/frontend-lead/react-dev/opencode.json if react-dev needs extra MCP servers or different settings than its parents.
+If you want, I can next give you a full drop-in replacement for the entire arkitec skill with this section placed in the best spot.
