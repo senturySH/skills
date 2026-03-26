@@ -16,7 +16,7 @@ description: >
 
 You operate as a **stateless CPU cycle**. Each run:
 1. Starts with zero memory of previous runs
-2. Recovers state by reading the Task Manager and Memory Log
+2. Recovers state by using **Kernel MCP**
 3. Executes programs defined in HBP format
 4. Tags every output so the next cycle can resume exactly where this one left off
 
@@ -41,9 +41,9 @@ Read the Task Manager to discover all active tasks from previous cycles.
 
 ```
 [SYSTEM] Checking Task Manager...
-task_list(status=running)
-task_list(status=blocked)
-task_list(status=pending)
+kernel-task_list(status=running)
+kernel-task_list(status=blocked)
+kernel-task_list(status=pending)
 ```
 
 ### Step 2 — Load Memory for Each Active Task
@@ -51,7 +51,7 @@ For each active task, load prior memory using the `[program][task]` tag.
 
 ```
 [SYSTEM] Loading memory for [program][task]...
-memory_read_program_task(program, task, limit=50, order=desc)
+kernel-memory_read_program_task(program, task, limit=50, order=desc)
 ```
 
 ### Step 3 — Execute Programs
@@ -130,29 +130,29 @@ The description field is indexed for search — use concrete, searchable terms.
 ### Inbox / DM
 | Tool | Purpose |
 |------|---------|
-| `inbox_unread_count` | Get count of unread messages |
-| `inbox_list(limit, offset)` | List inbox conversations |
-| `dm_get_conversation(conversationId)` | Read a specific conversation |
-| `dm_send(conversationId, message)` | Send a DM reply |
-| `inbox_mark_read(conversationId)` | Mark conversation as read |
+| `kernel-inbox_unread_count` | Get count of unread messages |
+| `kernel-inbox_list(limit, offset)` | List inbox conversations |
+| `kernel-dm_get_conversation(conversationId)` | Read a specific conversation |
+| `kernel-dm_send(conversationId, message)` | Send a DM reply |
+| `kernel-inbox_mark_read(conversationId)` | Mark conversation as read |
 
 ### Memory
 | Tool | Purpose |
 |------|---------|
-| `memory_recent(lines)` | Read recent log entries |
-| `memory_read_program_task(program, task, limit?, order?)` | Read memory for a specific task |
-| `memory_read_program(program, limit?, order?)` | Read all memory for a program |
-| `memory_grep(pattern, limit?, order?)` | Search memory by pattern |
+| `kernel-memory_recent(lines)` | Read recent log entries |
+| `kernel-memory_read_program_task(program, task, limit?, order?)` | Read memory for a specific task |
+| `kernel-memory_read_program(program, limit?, order?)` | Read all memory for a program |
+| `kernel-memory_grep(pattern, limit?, order?)` | Search memory by pattern |
 
 ### Tasks
 | Tool | Purpose |
 |------|---------|
-| `task_create(program, taskId, description, parentTaskId?, status?, priority?, references?)` | Create a task |
-| `task_list(program?, parentTaskId?, status?, priority?)` | List tasks |
-| `task_get(program, taskId)` | Get a single task |
-| `task_update(program, taskId, ...)` | Update task fields |
-| `task_mark_done(program, taskId)` | Mark task done (sets resolvedAt) |
-| `task_delete(program, taskId)` | Delete a task |
+| `kernel-task_create(program, taskId, description, parentTaskId?, status?, priority?, references?)` | Create a task |
+| `kernel-task_list(program?, parentTaskId?, status?, priority?)` | List tasks |
+| `kernel-task_get(program, taskId)` | Get a single task |
+| `kernel-task_update(program, taskId, ...)` | Update task fields |
+| `kernel-task_mark_done(program, taskId)` | Mark task done (sets resolvedAt) |
+| `kernel-task_delete(program, taskId)` | Delete a task |
 
 ---
 
@@ -191,7 +191,6 @@ END PROGRAM
 | Primitive | Tool Mapping |
 |-----------|--------------|
 | `read_memory(...)` | See dispatch table below |
-| `log(message)` | `memory_write_program_task(program, taskId, message)` |
 | `create_task(...)` | `task_create(program, taskId, description, parentTaskId?, status?, priority?, references?)` |
 | `task(taskId)` | `task_get(program, taskId)` |
 | `update_task(taskId, ...)` | `task_update(program, taskId, ...)` |
@@ -287,4 +286,4 @@ END PROGRAM
 
 ## Start
 
-On activation, execute the NETWORK program above.
+On activation, execute the NETWORK program and read delegation program above.
