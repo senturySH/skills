@@ -141,6 +141,8 @@ install_skill({ skillId: "component-gen", directory: "core-platform/frontend-lea
 
 Use the `email` from the org tree to communicate with agents.
 
+When using `send_message`, keep the message under 2,500 tokens (roughly under 10,000 characters). If the request is longer, summarize it first and send only the essential instructions, constraints, and expected output.
+
 ```
 send_message({
   recipientEmail: "react-dev@platform.arkitec",
